@@ -1,17 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import { BrowserRouter } from "react-router-dom"
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { ThemeProvider } from '@mui/material';
+import theme from './mui/theme';
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
+
+import "./Styles/fonts.css"
+import "./Styles/index.css"
+
+const client = new ApolloClient({
+  uri: process.env.REACT_APP_MOVIE_API,
+  cache: new InMemoryCache()
+})
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <ThemeProvider theme={theme}>
+    <BrowserRouter>
+      <ApolloProvider client={client}>
+        <App />
+      </ApolloProvider>
+    </BrowserRouter>
+  </ThemeProvider>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
